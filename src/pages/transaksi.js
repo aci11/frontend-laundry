@@ -1,6 +1,6 @@
 import React from "react"
 import axios from "axios"
-import { baseUrl, formatNumber } from "../config"
+import { baseUrl, formatNumber, authorization } from "../config"
 
 export default class Transaksi extends React.Component{
     constructor(){
@@ -15,7 +15,7 @@ export default class Transaksi extends React.Component{
 
     getData(){
         let endpoint = `${baseUrl}/transaksi`
-        axios.get(endpoint)
+        axios.get(endpoint, authorization)
         .then(response => {
             let dataTransaksi = response.data
             for (let i = 0; i < dataTransaksi.length; i++){
@@ -97,7 +97,7 @@ export default class Transaksi extends React.Component{
                 status: status
             }
 
-            axios.post(endpoint, data)
+            axios.post(endpoint, data, authorization)
             .then(response => {
                 window.alert('Status transaksi telah diubah')
                 this.getData()
@@ -131,7 +131,7 @@ export default class Transaksi extends React.Component{
     changeStatusBayar(id, status){
     if(window.confirm('Apakah anda yakin ingin mengubah status pembayaran ini?')){
         let endpoint =  `${baseUrl}/transaksi/bayar/${id}`
-        axios.get(endpoint)
+        axios.get(endpoint, authorization)
         .then(response => {
             window.alert('Status pembayaran telah diubah')
             this.getData()
@@ -144,7 +144,7 @@ export default class Transaksi extends React.Component{
     deleteTransaksi(id) {
         if (window.confirm('Apakah anda yakin ingin menghapus transaksi ini?')){
             let endpoint = `${baseUrl}/transaksi/${id}`
-            axios.delete(endpoint)
+            axios.delete(endpoint, authorization)
             .then(response => {
                 window.alert(response.data.message)
                 this.getData()

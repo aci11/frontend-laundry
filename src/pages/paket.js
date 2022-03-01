@@ -2,6 +2,7 @@ import React from "react";
 import { Modal } from "bootstrap";
 import { event } from "jquery";
 import axios from "axios"
+import { authorization } from "../config";
 
 class Paket extends React.Component{
     constructor(){
@@ -75,7 +76,7 @@ class Paket extends React.Component{
                 jenis_paket : this.state.jenis_paket,
                 harga: this.state.harga,
             }
-            axios.put(endpoint, newPaket)
+            axios.put(endpoint, newPaket, authorization)
             .then(response => {
                 window.alert(response.data.message)
                 this.getData()
@@ -120,7 +121,7 @@ class Paket extends React.Component{
             let endpoint = "http://localhost:8000/paket/" + 
                 id_paket
 
-            axios.delete(endpoint)
+            axios.delete(endpoint, authorization)
             .then(response => {
                 window.alert(response.data.message)
                 this.getData()
@@ -142,7 +143,7 @@ class Paket extends React.Component{
 
     getData(){
         let endpoint = "http://localhost:8000/paket"
-        axios.get(endpoint)
+        axios.get(endpoint, authorization)
         .then(response => {
             this.setState({pakets: response.data})
         })

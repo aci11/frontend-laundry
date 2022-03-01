@@ -2,6 +2,7 @@ import React from "react"
 import { Modal } from "bootstrap";
 import { event } from "jquery";
 import axios from "axios"
+import { baseUrl, authorization} from "../config"
 
 class User extends React.Component{
     constructor(){
@@ -60,7 +61,7 @@ class User extends React.Component{
             // temp.push(newUser)
 
             // this.setState({ users: temp })
-            axios.post(endpoint, newUser)
+            axios.post(endpoint, newUser, authorization)
             .then(response => {
                 window.alert(response.data.message)
                 this.getData()
@@ -78,7 +79,7 @@ class User extends React.Component{
                 username: this.state.username,
                 password: this.state.password,
             }
-            axios.put(endpoint, newUser)
+            axios.put(endpoint, newUser, authorization)
             .then(response => {
                 window.alert(response.data.message)
                 this.getData()
@@ -125,7 +126,7 @@ class User extends React.Component{
             let endpoint = "http://localhost:8000/user/" + 
                 id_user
 
-            axios.delete(endpoint)
+            axios.delete(endpoint, authorization)
             .then(response => {
                 window.alert(response.data.message)
                 this.getData()
@@ -147,7 +148,7 @@ class User extends React.Component{
 
     getData(){
         let endpoint = "http://localhost:8000/user"
-        axios.get(endpoint)
+        axios.get(endpoint, authorization)
         .then(response => {
             this.setState({users: response.data})
         })
