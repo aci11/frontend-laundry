@@ -1,6 +1,8 @@
 import React from "react"
 import axios from "axios"
 import { baseUrl, formatNumber, authorization } from "../config"
+import ReactToPdf from "react-to-pdf"
+import domToPdf from "dom-to-pdf"
 
 export default class Transaksi extends React.Component{
     constructor(){
@@ -152,7 +154,26 @@ export default class Transaksi extends React.Component{
             .catch(error => console.log(error))
         }
     }
+
+    convertPdf(){
+        // ambil element yang akan diconvert ke pdf
+        let element = document.getElementById(`target`)
+        let options = {
+            filename: "coba.pdf"
+
+        }
+
+        domToPdf(element, options, () => {
+            window.alert("File will download soon")
+        })
+    }
     render(){
+        const target = React.createRef()
+        const optionPDF = {
+            orientation : `landscape`,
+            unit : `cm`,
+            format : [21, 29.7],
+        }
         return(
             <div className="container">
             <div className="card">
@@ -163,6 +184,25 @@ export default class Transaksi extends React.Component{
                 </div>
 
                 <div className="card-body">
+                  
+                    {/* <ReactToPdf targetRef= {target} filename="Coba.pdf"
+                    scale={0.9} 
+                    options={optionPDF}>
+                        { ({toPdf}) => (
+                            <button className="btn btn-danger"
+                            onClick={toPdf}>
+                                Generate PDF
+                            </button>
+                        )}
+                    </ReactToPdf> */}
+
+                    <button className="btn btn-danger"
+                    onClick={ () => this.convertPdf()}>
+                        Convert To PDF
+                    </button>
+
+                    <div ref={target} id="target">
+                        <h3>List Transaksi</h3>
                     <ul className="list-group">
                         {this.state.transaksi.map(trans => (
                             <li className="list-group-item">
@@ -261,6 +301,7 @@ export default class Transaksi extends React.Component{
                             </li>
                         ))}
                     </ul>
+                    </div>
                 </div>
             </div>
         </div>
